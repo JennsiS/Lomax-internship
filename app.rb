@@ -7,6 +7,18 @@ option = 0
 # Array for storing contact information
 contacts = []
 
+
+def validate_number number
+    input = Integer(number) rescue false 
+    while !input
+        puts "Please enter a valid number"
+        input = Integer(gets) rescue false
+    end
+
+    return input
+
+end
+
 while option !=6
     puts "1. Create a new contact"
     puts "2. Show contacts"
@@ -24,8 +36,15 @@ while option !=6
         last_name = gets
         puts "E-mail: "
         email = gets
+
+        while email.empty?
+            puts "You must enter an email address"
+            puts "E-mail: "
+            email = gets
+        end
+
         puts "Telephone: "
-        phone = gets
+        phone = validate_number(gets)
 
         contacts.append({
             "first_name" => first_name,
@@ -43,11 +62,11 @@ while option !=6
             puts "First Name: #{contact["first_name"]}" 
             puts "Last Name: #{contact["last_name"]}"
             puts "Email: #{contact["email"]}"
-            puts "Telephone: #{contact["phone"]}"
+            puts "Telephone: #{contact["telephone"]}"
             puts "------------------------------"
         end
     elsif option == 3
-        puts "Enter the email of the contact you want to update:"
+        puts "Enter the email of the contact you want to update: "
         udpate_email = gets
         contact_number = contacts.index {|contact| contact["email"] == udpate_email}
         
@@ -61,26 +80,25 @@ while option !=6
                 puts "Enter the new first name"
                 new_name = gets
                 contacts[contact_number]["first_name"] = new_name
-                puts "Contact with email #{udpate_email} updated successfully"
+                puts "Contact with email #{udpate_email} updated successfully\n"
             elsif update_option == 2
                 puts "Enter the new last name"
                 new_last_name = gets
                 contacts[contact_number]["last_name"] = new_last_name
-                puts "Contact with email #{udpate_email} updated successfully"
+                puts "Contact with email #{udpate_email} updated successfully\n"
             elsif update_option == 3
                 puts "Enter the new email"
                 new_email = gets
                 contacts[contact_number]["email"] = new_email
-                puts "Contact with email #{udpate_email} updated successfully"
+                puts "Contact with email #{udpate_email} updated successfully\n"
             elsif update_option == 4
                 puts "Enter the new telephone"
-                new_phone = gets
+                new_phone = validate_number(gets)
                 contacts[contact_number]["telephone"] = new_phone
-                puts "Contact with email #{udpate_email} updated successfully"
+                puts "Contact with email #{udpate_email} updated successfully\n"
             else
                 puts "Invalid option"
             end
-
 
         else
             puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
@@ -96,14 +114,22 @@ while option !=6
         
         unless contact_number.nil?
             contacts.delete_at(contact_number)
-            puts "Contact with email #{delete_email} deleted successfully"
+            puts "Contact with email #{delete_email} deleted successfully\n"
         else
             puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
             puts "This email doesn't exist in the list of contacts"
             puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         end
     elsif option == 5
-        File.open("contacts.txt", "w") {|f| f.write(contacts) }
+        if contacts.length() > 0
+            File.open("contacts.txt", "w+") do |f|
+                f.puts "**********List of contacts**************"
+                contacts.each { |contact| f.puts("First Name: #{contact["first_name"]} Last Name: #{contact["last_name"]} Email: #{contact["email"]} Telephone #{contact["telephone"]}\n") } 
+            end
+            puts "Contacts exported successfully in 'contacts.txt' file"
+        else
+            puts "You don't have contacts to export"
+        end
     elsif option == 6
         puts "Goodbye!"
     else
