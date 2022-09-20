@@ -6,3 +6,8 @@ The application allows to:
 3. Update the contact list
 4. Delete a contact from the list
 5. Generate a report of the contact list in a txt file
+
+To use the application, download the repository folder and then run the following command
+``
+ruby app.rb
+``
