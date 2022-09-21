@@ -11,3 +11,10 @@ To use the application, download the repository folder and then run the followin
 ``
 ruby app.rb
 ``
+
+# Ruby-POO
+In this module the objective was to implement Classes, Encapsulation, Inheritance and Modules. This application is an representation of an airport with some of the elements that are part of it. The main application is airport.rb. To use the application go to ruby-poo/ an run the following command
+
+``
+ruby airport.rb
+``
